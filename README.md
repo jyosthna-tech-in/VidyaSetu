@@ -1,3 +1,6 @@
+###Live : https://vidya-setu-pi.vercel.app/
+
+
 # VidyaSetu
 
 AI-powered adaptive study and assessment platform for NCERT-based learning.
@@ -51,7 +54,9 @@ Never commit `.env`. Use your own database credentials and API keys.
 
 Use this option if you do not have Docker installed.
 
-Create a free PostgreSQL database using Supabase, Neon, Railway, or another PostgreSQL provider. Then update these values in `.env`:
+
+- Prisma ORM
+- JWT Authentication
 
 ```env
 DATABASE_URL="your-hosted-postgresql-url"
