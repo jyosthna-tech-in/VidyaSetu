@@ -48,19 +48,13 @@ export default function NcertChapterPage() {
     return <ChapterPageSkeleton />;
   }
 
-  const src = `https://docs.google.com/viewer?url=${encodeURIComponent(chapter?.pdf!)}&embedded=true`;
+  
 
   console.log(chapter)
   return (
     <main className='flex '>
       <div className='flex-1'>
-        <iframe
-        src={src}
-        style={{ width: '100%', height: '100vh', border: 'none' }}
-        title="PDF Viewer"
-        allow="fullscreen"
-        className=''
-        />
+        will come soon here 
 
       </div>
       <div className='flex-1'>

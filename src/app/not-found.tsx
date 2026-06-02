@@ -38,10 +38,10 @@ export default function NotFound() {
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link 
-                  href="/ncert" 
+                  href="/dashboard" 
                   className="bg-[#1A1A1A] hover:bg-black text-white px-8 py-4  text-[13px] font-semibold transition-colors text-center font-semibold"
                 >
-                  Return to Explore
+                  Return to Home
                 </Link>
                 <Link 
                   href="/dashboard" 
