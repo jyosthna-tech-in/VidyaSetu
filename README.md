@@ -10,7 +10,7 @@ AI-powered adaptive study and assessment platform for NCERT-based learning.
 VidyaSetu helps students move from passive studying to structured practice with chapter-wise study material, quiz workflows, subjective answer evaluation, and analytics.
 
 - Live app: https://vidya-setu-pi.vercel.app/
-- Codebase docs: `/docs`
+- Codebase docs: https://vidya-setu-pi.vercel.app/docs
 
 ## GSSoC 2026
 
