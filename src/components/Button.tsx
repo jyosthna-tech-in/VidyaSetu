@@ -3,14 +3,14 @@ import React from 'react';
 
 function Button({
   text,
-  action = () => {},  // ✅ empty function, NOT empty string
+  action = () => {}, // ✅ empty function, NOT empty string
   color = '',
   textCol = '',
   additional = '',
   hover = '',
 }: {
   text: string;
-  action?: () => void;  // ✅ function type, NOT any
+  action?: () => void; // ✅ function type, NOT any
   color?: string;
   textCol?: string;
   additional?: string;
