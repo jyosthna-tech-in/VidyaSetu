@@ -1,23 +1,33 @@
 import { NextResponse } from 'next/server';
+import { ZodError } from 'zod';
 import AnalyticsService from './analytics.service';
+import { WeakTopicAnalyticsError } from './analytics.types';
+import { weakTopicsQuerySchema } from './analytics.validator';
 import { SetCookies } from '@/lib/auth/cookies';
 
 async function getAuthenticatedUserId() {
   const token = await SetCookies.verifyCookies();
+  return token?.sub ?? null;
+}
 
-  if (!token) {
-    return null;
+const handleAnalyticsError = (error: unknown) => {
+  if (error instanceof ZodError) {
+    return NextResponse.json(
+      { message: 'Invalid query parameters', errors: error.issues },
+      { status: 400 }
+    );
   }
-
-  return token.sub;
-}
-
-function handleError(error: unknown) {
-  const message =
-    error instanceof Error ? error.message : 'Internal server error';
-
-  return NextResponse.json({ success: false, message }, { status: 500 });
-}
+  if (error instanceof WeakTopicAnalyticsError) {
+    return NextResponse.json(
+      { message: error.message },
+      { status: error.statusCode }
+    );
+  }
+  return NextResponse.json(
+    { message: 'Internal server error' },
+    { status: 500 }
+  );
+};
 
 export default class AnalyticsController {
   static async getAnalytics(_req: Request) {
@@ -35,7 +45,7 @@ export default class AnalyticsController {
 
       return NextResponse.json({ success: true, data: res }, { status: 200 });
     } catch (error: unknown) {
-      return handleError(error);
+      return handleAnalyticsError(error);
     }
   }
 
@@ -54,7 +64,34 @@ export default class AnalyticsController {
 
       return NextResponse.json({ success: true, data: res }, { status: 200 });
     } catch (error: unknown) {
-      return handleError(error);
+      return handleAnalyticsError(error);
+    }
+  }
+
+  static async getWeakTopics(req: Request) {
+    try {
+      const userId = await getAuthenticatedUserId();
+      if (!userId) {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      }
+
+      const url = new URL(req.url);
+      const rawParams = Object.fromEntries(url.searchParams.entries());
+      const params = weakTopicsQuerySchema.parse(rawParams);
+
+      const result = await AnalyticsService.getWeakTopics(
+        userId,
+        params
+      );
+
+      return NextResponse.json(
+        { message: 'Weak topics retrieved successfully', data: result },
+        { status: 200 }
+      );
+    } catch (error: unknown) {
+      return handleAnalyticsError(error);
     }
   }
 }
+
+export { AnalyticsController };
