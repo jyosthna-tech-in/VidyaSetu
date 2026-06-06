@@ -5,11 +5,35 @@ import Senv from '../../public/Study environment.png';
 import DV from '../../public/Data visualization.png';
 import { useRouter } from 'next/navigation';
 import Link from "next/link";
-import { SessionProvider, useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import authFetch from '../lib/auth/authFetch';
 
-function MainContent() {
+export default function Home() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const [user, setUser] = useState({ name: "Kasturi" });
+
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const response = await authFetch({
+        url: '/api/user/getUser', 
+        options: { method: 'GET' },
+      });
+
+      if (response?.data?.user) {
+        setUser(response.data.user);
+      } else if (response?.user) {
+        setUser(response.user);
+      } else if (response?.data) {
+        setUser(response.data);
+      }
+    } catch (error) {
+      console.error("User fetch failed.");
+    }
+  };
+
+  fetchUser();
+}, []);
   return (
     <div className="flex flex-col h-max w-screen bg-background  ">
       <div className="flex  flex-col min-h-screen  p-4 pl-8 pr-8 ">
@@ -31,9 +55,9 @@ function MainContent() {
               />
             </svg>
 
-            {session?.user ? (
+            {user ? (
               <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
-                {session.user.name?.[0]?.toUpperCase() ?? 'U'}
+                {user.name?.[0]?.toUpperCase() ?? 'U'}
               </div>
             ) : (
               <Link href="/login" className="text-sm font-medium text-black hover:opacity-65 transition-opacity">
@@ -317,10 +341,3 @@ function MainContent() {
   );
 }
 
-export default function Home() {
-  return (
-    <SessionProvider>
-      <MainContent />
-    </SessionProvider>
-  );
-}
