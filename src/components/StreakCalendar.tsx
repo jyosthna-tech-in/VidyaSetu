@@ -9,11 +9,11 @@ interface StreakCalendarProps extends React.ComponentProps<'div'> {
 }
 
 const LEVEL_COLORS: Record<number, string> = {
-  0: 'bg-muted',
-  1: 'bg-emerald-200',
-  2: 'bg-emerald-400',
-  3: 'bg-emerald-600',
-  4: 'bg-emerald-800',
+  0: 'bg-muted/40 dark:bg-muted/10 border border-border/20',
+  1: 'bg-teal-100 dark:bg-teal-950/40 border border-teal-200/20',
+  2: 'bg-teal-300 dark:bg-teal-800',
+  3: 'bg-teal-500 dark:bg-teal-600',
+  4: 'bg-teal-700 dark:bg-teal-400',
 };
 
 const LEVEL_LABELS: Record<number, string> = {
@@ -150,7 +150,16 @@ function StreakCalendar({ calendar, className, ...props }: StreakCalendarProps) 
                       style={{ width: `${cellPx}px`, height: `${cellPx}px` }}
                       title={
                         cell.date && !isFuture
-                          ? `${cell.date}: ${LEVEL_LABELS[cell.level]}`
+                          ? `${new Date(cell.date).toLocaleDateString(undefined, {
+                              weekday: 'long',
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            })}: ${
+                              cell.count === 0
+                                ? 'No study activity'
+                                : `${cell.count} total activit${cell.count === 1 ? 'y' : 'ies'} (${cell.quizzes || 0} quiz${cell.quizzes === 1 ? '' : 'zes'}, ${cell.notes || 0} note${cell.notes === 1 ? '' : 's'})`
+                            }`
                           : undefined
                       }
                     />

@@ -155,4 +155,24 @@ export default class AnalyticsRepository {
 
     return Number(result[0]?.count ?? 0);
   }
+
+  static async getActivityOverview(userId: string, startDate: Date) {
+    const [sessions, notes] = await Promise.all([
+      prisma.quizSession.findMany({
+        where: {
+          userId,
+          completedAt: { gte: startDate },
+        },
+        select: { completedAt: true },
+      }),
+      prisma.note.findMany({
+        where: {
+          userId,
+          createdAt: { gte: startDate },
+        },
+        select: { createdAt: true },
+      }),
+    ]);
+    return { sessions, notes };
+  }
 }
