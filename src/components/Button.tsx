@@ -11,7 +11,6 @@ function Button({
 }: {
   text: string;
   action?: React.MouseEventHandler<HTMLButtonElement>;
-  action?: () => void;
   color?: string;
   textCol?: string;
   additional?: string;
