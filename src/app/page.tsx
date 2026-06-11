@@ -32,7 +32,7 @@ useEffect(() => {
     fetchUser();
   }, []);
   return (
-    <div className="flex flex-col h-max w-screen bg-background  ">
+    <div className="flex flex-col h-max w-full bg-background  ">
       <div className="flex  flex-col min-h-screen  p-4 pl-8 pr-8 ">
         <div className="w-full h-10 flex justify-between items-center">
           <p className="text-2xl uppercase tracking-tighter font-bold">
